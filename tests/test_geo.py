@@ -2,8 +2,13 @@
 
 import json
 import os
+import sys
 import tempfile
 import unittest
+
+# Add src to path for direct test execution
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+
 from sawitvision.geo import export_geojson
 from sawitvision.viz import sort_detections_deterministically
 

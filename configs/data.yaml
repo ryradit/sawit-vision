@@ -1,5 +1,5 @@
 # YOLO dataset configuration for SawitVision
-path: /Users/ryanradityatama/sawit-vision/data
+path: data
 train: splits/train.txt
 val: splits/val.txt
 test: splits/test.txt

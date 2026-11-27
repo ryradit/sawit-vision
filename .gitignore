@@ -20,4 +20,3 @@ runs/detect/
 
 # Intermediate slice tiles (generated via scripts/make_tiles.py)
 data/tiles/
-data/splits/

@@ -59,6 +59,16 @@ def evaluate_split(split_file: str, conf_thresh: float = 0.25, iou_thresh: float
     per_image_results = []
 
     for img_p in image_paths:
+        if not os.path.exists(img_p):
+            # Resolve relative path or normalize cross-machine absolute paths
+            repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+            if "data/" in img_p:
+                candidate = os.path.join(repo_root, "data", img_p.split("data/")[-1])
+            else:
+                candidate = os.path.join(repo_root, img_p)
+            if os.path.exists(candidate):
+                img_p = candidate
+
         lbl_p = img_p.replace("/images/", "/labels/").replace(".jpg", ".txt")
         gt_boxes = []
         if os.path.exists(lbl_p):

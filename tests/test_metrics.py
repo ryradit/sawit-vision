@@ -1,6 +1,12 @@
 """Unit tests for counting metrics evaluation using standard library unittest."""
 
+import os
+import sys
 import unittest
+
+# Add src to path for direct test execution
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+
 from sawitvision.metrics import compute_count_metrics
 
 

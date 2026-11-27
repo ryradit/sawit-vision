@@ -47,15 +47,15 @@ def create_spatial_splits(
     val_txt = os.path.join(splits_dir, "val.txt")
     test_txt = os.path.join(splits_dir, "test.txt")
 
-    # Write absolute paths for YOLO data loader
+    # Write relative paths for portable dataset splits
     with open(train_txt, "w", encoding="utf-8") as f:
-        f.write("\n".join([os.path.abspath(p) for p in train_set]) + "\n")
+        f.write("\n".join([os.path.relpath(p) for p in train_set]) + "\n")
 
     with open(val_txt, "w", encoding="utf-8") as f:
-        f.write("\n".join([os.path.abspath(p) for p in val_set]) + "\n")
+        f.write("\n".join([os.path.relpath(p) for p in val_set]) + "\n")
 
     with open(test_txt, "w", encoding="utf-8") as f:
-        f.write("\n".join([os.path.abspath(p) for p in test_set]) + "\n")
+        f.write("\n".join([os.path.relpath(p) for p in test_set]) + "\n")
 
     print("\n" + "=" * 60)
     print("SPATIAL DATA SPLITS CREATED")
