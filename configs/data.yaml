@@ -1,0 +1,8 @@
+# YOLO dataset configuration for SawitVision
+path: /Users/ryanradityatama/sawit-vision/data
+train: splits/train.txt
+val: splits/val.txt
+test: splits/test.txt
+
+names:
+  0: oil_palm

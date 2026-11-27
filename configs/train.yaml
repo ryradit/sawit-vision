@@ -1,0 +1,20 @@
+# Training configuration and hyperparameters for SawitVision
+model: yolo11s.pt
+epochs: 100
+batch: 16
+imgsz: 1024
+seed: 42
+max_det: 1500
+patience: 20
+workers: 4
+
+# Augmentations for aerial nadir imagery
+degrees: 180.0       # aerial imagery has no fixed 'up'
+flipud: 0.5          # vertical flip
+fliplr: 0.5          # horizontal flip
+hsv_h: 0.015         # hue adjustment
+hsv_s: 0.7           # saturation
+hsv_v: 0.4           # brightness variation for shadows
+scale: 0.3           # scale variation for variable flight altitudes
+mosaic: 1.0          # multi-tile mosaic augmentation
+close_mosaic: 10     # disable mosaic for last 10 epochs

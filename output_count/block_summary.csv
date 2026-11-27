@@ -1,0 +1,4 @@
+block_id,name,area_ha,actual_trees,target_trees,observed_density_ha,target_density_ha,completion_rate_pct,detected_vacancies,stand_deficit,mean_spacing_m,spacing_cv,regularity_score
+BLK-A,North Division,0.182,188,26,1030.9,140.0,723.1,111,0,2.58,0.145,71.7
+BLK-B,Central Division,0.188,250,26,1331.5,140.0,961.5,81,0,2.54,0.061,87.7
+BLK-C,South Division,0.155,144,22,926.7,140.0,654.5,91,0,2.67,0.146,69.7

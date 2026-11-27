@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+
+# Python environments
+venv/
+.venv/
+env/
+
+# Training intermediate caches
+runs/train/
+runs/detect/
+*.cache
+
+# Intermediate slice tiles (generated via scripts/make_tiles.py)
+data/tiles/
+data/splits/
