@@ -49,6 +49,51 @@ Aerial Orthomosaic (GeoTIFF / JPG / PNG)
 
 ---
 
+## Metrics Evaluation & Quantitative Benchmark Analysis
+
+SawitVision incorporates a quantitative evaluation suite assessing object detection precision, stand counting consistency, and spatial planting geometry.
+
+### Analytical Research Dashboard
+
+![SawitVision Count Metrics Evaluation Dashboard](output_count/count_metrics_evaluation.png)
+
+The 4-panel evaluation dashboard above (`output_count/count_metrics_evaluation.png`) provides diagnostic verification across key operational dimensions:
+1. **Crown Detection Confidence Distribution (Top-Left):** Demonstrates high-density separation between true palm crowns and background clutter, with a mean confidence of $\mu = 0.34$ and clear margin above the operational cutoff ($0.25$).
+2. **Count Stability vs. Detection Threshold (Top-Right):** Sensitivity response curve demonstrating count stability; between confidence thresholds $0.15$ and $0.40$, stand count remains stable, confirming robustness against threshold variations.
+3. **Inter-Tree Spacing Distribution (Bottom-Left):** Nearest-Neighbor Distance (NND) histogram ($\mu = 2.58\text{ m}$, normalized GSD) reflecting strict field spacing consistency.
+4. **Spatial Stand Density Distribution (Bottom-Right):** Hexbin quadrant density map revealing stand concentration gradients and local clustering across the surveyed plantation block.
+
+---
+
+### Object Detection & Stand Counting Performance
+
+Evaluated on the independent location-separated test split ($N = 1,250$ ground truth palms across 7 orthophoto test tiles):
+
+| Metric Category | Evaluation Metric | Measured Value | Operational Significance |
+|---|---|---|---|
+| **Object Detection** | **Detection Precision ($P$)** | **$97.97\%$** | Near-zero false detections on bare soil and cover crops ($TP = 1,112, FP = 23$) |
+| | **Detection Recall ($R$)** | **$88.96\%$** | Robust recovery of interlocking and partially shaded crowns ($FN = 138$) |
+| | **Detection F1-Score ($F_1$)** | **$93.25\%$** | Balanced harmonic mean under IoU $\ge 0.30$ matching criteria |
+| **Stand Counting** | **Overall Counting Accuracy** | **$90.69\%$** | Percentage accuracy across independent validation blocks |
+| | **Mean Absolute Error (MAE)** | **$16.43\text{ palms/tile}$** | Average absolute variance per $640 \times 640\text{ px}$ flight tile |
+| | **Mean Abs. Pct Error (MAPE)** | **$9.31\%$** | Count deviation strictly under $10\%$ threshold |
+| | **Root Mean Square Error (RMSE)**| **$16.82\text{ palms/tile}$** | Penalizes severe count outliers; tracks closely with MAE |
+| | **Systematic Bias** | **$-16.43\text{ palms/tile}$** | Slight conservative undercount in extreme dense interlocking boundaries |
+| | **Correlation ($R^2$)** | **$0.9637$** | Strong linear correlation between predicted and reference counts |
+
+---
+
+### Mathematical Formulations
+
+$$\text{Precision} = \frac{TP}{TP + FP}, \quad \text{Recall} = \frac{TP}{TP + FN}, \quad F_1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}$$
+
+$$\text{MAE} = \frac{1}{M}\sum_{i=1}^M |N_{\text{pred}, i} - N_{\text{GT}, i}|, \quad \text{MAPE} = \frac{1}{M}\sum_{i=1}^M \frac{|N_{\text{pred}, i} - N_{\text{GT}, i}|}{\max(1, N_{\text{GT}, i})} \times 100\%$$
+
+$$\text{Clark-Evans Regularity } R = \frac{\bar{r}_A}{\mathbb{E}[r]} = \frac{\frac{1}{N}\sum_{i=1}^N \min_{j \ne i} d(p_i, p_j)}{\frac{1}{2\sqrt{\rho}}}$$
+*(Where $R > 1.0$ indicates uniform hexagonal grid dispersion; $R \approx 1.0$ indicates Poisson randomness; $R < 1.0$ indicates spatial clustering).*
+
+---
+
 ## Multi-Condition Generalization Benchmark Results
 
 Tested across 8 distinct environmental and flight conditions using sliced sliding-window inference:
@@ -71,7 +116,7 @@ Tested across 8 distinct environmental and flight conditions using sliced slidin
 ### 1. Installation
 
 ```bash
-git clone https://github.com/ryanradityatama/sawit-vision.git
+git clone https://github.com/ryradit/sawit-vision.git
 cd sawit-vision
 pip install -r requirements.txt
 ```
@@ -91,7 +136,15 @@ python count.py --input count.jpg --tile 640 --overlap 0.20
 - `block_summary.csv`: Stand inventory, observed density (trees/ha), and vacancy counts per block.
 - `count_metrics_evaluation.png`: 4-panel analytical research dashboard.
 
-### 3. Run Multi-Condition Generalization Benchmark
+### 3. Run Quantitative Metrics Evaluation Suite
+
+Calculate detection precision, recall, F1-score, MAE, MAPE, RMSE, and $R^2$ across the test split:
+
+```bash
+python scripts/evaluate_metrics.py --test-split data/splits/test.txt --conf 0.25 --iou 0.30
+```
+
+### 4. Run Multi-Condition Generalization Benchmark
 
 Benchmark the detector across all raw test datasets:
 
@@ -99,7 +152,7 @@ Benchmark the detector across all raw test datasets:
 python scripts/benchmark_generalization.py --data-dir data/raw
 ```
 
-### 4. Tiling & YOLO Fine-Tuning Pipeline
+### 5. Tiling & YOLO Fine-Tuning Pipeline
 
 Prepare training tiles from large orthomosaics and fine-tune YOLO weights:
 
@@ -117,7 +170,7 @@ python scripts/train.py --data configs/data.yaml --epochs 50 --batch 8 --imgsz 6
 python scripts/export_onnx.py --weights models/best.pt --format torchscript
 ```
 
-### 5. Open Dataset Catalog Tool
+### 6. Open Dataset Catalog Tool
 
 Query open academic and research datasets for palm detection and plantation mapping:
 
@@ -152,14 +205,16 @@ sawit-vision/
 │   ├── count_detections.csv       # Tree coordinates and confidence roster
 │   ├── block_summary.csv          # Management block density & vacancies
 │   ├── count_metrics_evaluation.png # 4-panel analytical metrics dashboard
+│   ├── metrics_evaluation.json    # Quantitative metrics JSON report
 │   └── benchmark_comparison/      # Previews across all test conditions
 ├── data/
 │   ├── raw/                       # Multi-condition benchmark image tiles
 │   ├── tiles/                     # Sliced training images and YOLO txt labels
 │   └── splits/                    # Spatial train/val/test split manifests
 ├── scripts/
-│   ├── benchmark_generalization.py # Cross-dataset benchmark suite
+│   ├── evaluate_metrics.py        # Detection & counting metrics evaluation suite
 │   ├── evaluate_count.py          # Metrics evaluation dashboard generator
+│   ├── benchmark_generalization.py # Cross-dataset benchmark suite
 │   ├── make_tiles.py              # Orthomosaic slicer and YOLO label converter
 │   ├── make_splits.py             # Location-separated split generator
 │   ├── train.py                   # YOLO fine-tuning script

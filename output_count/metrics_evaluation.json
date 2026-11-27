@@ -1,0 +1,87 @@
+{
+  "num_images": 7,
+  "total_ground_truth": 1250,
+  "total_predicted": 1135,
+  "detection_metrics": {
+    "iou_threshold": 0.3,
+    "true_positives": 1112,
+    "false_positives": 23,
+    "false_negatives": 138,
+    "precision": 0.9797,
+    "recall": 0.8896,
+    "f1_score": 0.9325
+  },
+  "count_metrics": {
+    "mae": 16.429,
+    "mape_pct": 9.306,
+    "rmse": 16.823,
+    "bias": -16.429,
+    "r2_score": 0.9637,
+    "accuracy_pct": 90.694
+  },
+  "per_image": [
+    {
+      "file": "sample_plantation_t029.jpg",
+      "ground_truth": 183,
+      "predicted": 173,
+      "error": -10,
+      "tp": 169,
+      "fp": 4,
+      "fn": 14
+    },
+    {
+      "file": "sample_plantation_t030.jpg",
+      "ground_truth": 148,
+      "predicted": 133,
+      "error": -15,
+      "tp": 128,
+      "fp": 5,
+      "fn": 20
+    },
+    {
+      "file": "sample_plantation_t031.jpg",
+      "ground_truth": 153,
+      "predicted": 135,
+      "error": -18,
+      "tp": 134,
+      "fp": 1,
+      "fn": 19
+    },
+    {
+      "file": "wibowo_dense_interlocking_t032.jpg",
+      "ground_truth": 185,
+      "predicted": 162,
+      "error": -23,
+      "tp": 160,
+      "fp": 2,
+      "fn": 25
+    },
+    {
+      "file": "wibowo_dense_interlocking_t033.jpg",
+      "ground_truth": 199,
+      "predicted": 182,
+      "error": -17,
+      "tp": 179,
+      "fp": 3,
+      "fn": 20
+    },
+    {
+      "file": "wibowo_dense_interlocking_t034.jpg",
+      "ground_truth": 185,
+      "predicted": 168,
+      "error": -17,
+      "tp": 164,
+      "fp": 4,
+      "fn": 21
+    },
+    {
+      "file": "wibowo_dense_interlocking_t035.jpg",
+      "ground_truth": 197,
+      "predicted": 182,
+      "error": -15,
+      "tp": 178,
+      "fp": 4,
+      "fn": 19
+    }
+  ]
+}
